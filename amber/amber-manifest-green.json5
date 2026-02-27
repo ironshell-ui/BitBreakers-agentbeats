@@ -1,0 +1,52 @@
+{
+  manifest_version: "0.1.0",
+  program: {
+    image: "registry.hub.docker.com/bitbreakers/green-agent:latest",
+    entrypoint: [
+      "uv",
+      "run",
+      "scenarios/medagentbench/evaluator/src/server.py",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8081"
+    ],
+    env: {
+      OPENAI_API_KEY: "${config.openai_api_key}",
+      PROXY_URL: "${slots.proxy.url}",
+      LOG_LEVEL: "INFO",
+    },
+    network: {
+      endpoints: [
+        { name: "endpoint", port: 8081 },
+      ],
+    },
+  },
+  config_schema: {
+    type: "object",
+    properties: {
+      openai_api_key: { type: "string", secret: true },
+    },
+    required: ["openai_api_key"],
+    additionalProperties: false,
+  },
+  slots: {
+    proxy: { kind: "a2a" },
+  },
+  provides: {
+    a2a: { kind: "a2a", endpoint: "endpoint" },
+  },
+  exports: {
+    a2a: "a2a",
+  },
+  metadata: {
+    assessment_config: {
+      "domain": "healthcare",
+      "fhir_api_base": "http://medagentbench.ddns.net:8080/fhir/",
+      "mcp_server_url": "http://medagentbench.ddns.net:8002",
+      "num_tasks": 330,
+      "num_workers": 1
+    },
+    participant_roles: ["agent"]
+  }
+}
