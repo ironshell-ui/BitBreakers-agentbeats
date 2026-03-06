@@ -115,7 +115,7 @@ FHIR_SERVICE_TEMPLATE = """  fhir-server:
     ports:
       - "8080:8080"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/fhir/metadata"]
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/fhir/metadata || wget -qO /dev/null http://localhost:8080/fhir/metadata || (echo > /dev/tcp/localhost/8080) 2>/dev/null"]
       interval: 10s
       timeout: 5s
       retries: 60
