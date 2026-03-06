@@ -1,5 +1,5 @@
 [green_agent]
-image = "ghcr.io/ironshell-ui/bitbreakers-agentbeats-medagentbench-evaluator:latest"
+image = "ghcr.io/rdi-foundation/bitbreakers-agentbeats-medagentbench-evaluator:latest"
 env = {}
 
 [[participants]]
