@@ -118,8 +118,8 @@ FHIR_SERVICE_TEMPLATE = """  fhir-server:
       test: ["CMD", "curl", "-f", "http://localhost:8080/fhir/metadata"]
       interval: 10s
       timeout: 5s
-      retries: 30
-      start_period: 180s
+      retries: 60
+      start_period: 300s
     networks:
       - agent-network
 """
