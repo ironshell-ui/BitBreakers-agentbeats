@@ -69,7 +69,7 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-      start_period: 30s
+      start_period: 180s
     depends_on:{green_depends}
     networks:
       - agent-network
@@ -104,6 +104,22 @@ PARTICIPANT_TEMPLATE = """  {name}:
       timeout: 3s
       retries: 10
       start_period: 30s
+    networks:
+      - agent-network
+"""
+
+FHIR_SERVICE_TEMPLATE = """  fhir-server:
+    image: jyxsu6/medagentbench:latest
+    platform: linux/amd64
+    container_name: fhir-server
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/fhir/metadata"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 180s
     networks:
       - agent-network
 """
@@ -188,14 +204,20 @@ def generate_docker_compose(scenario: dict[str, Any]) -> str:
         for p in participants
     ])
 
-    all_services = ["green-agent"] + participant_names
+    # Add fhir-server service for MedAgentBench
+    fhir_service = FHIR_SERVICE_TEMPLATE
+    all_participant_services = fhir_service + "\n" + participant_services if participant_services else fhir_service
+
+    # green-agent depends on fhir-server + any participants
+    green_depends_list = ["fhir-server"] + participant_names
+    all_services = ["green-agent", "fhir-server"] + participant_names
 
     return COMPOSE_TEMPLATE.format(
         green_image=green["image"],
         green_port=DEFAULT_PORT,
         green_env=format_env_vars(green.get("env", {})),
-        green_depends=format_depends_on(participant_names),
-        participant_services=participant_services,
+        green_depends=format_depends_on(green_depends_list),
+        participant_services=all_participant_services,
         client_depends=format_depends_on(all_services)
     )
 
