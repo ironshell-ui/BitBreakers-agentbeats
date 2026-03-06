@@ -1,11 +1,11 @@
 [green_agent]
-image = "ghcr.io/ironshell-ui/bitbreakers-agentbeats-medagentbench-evaluator:latest"
+agentbeats_id = "karim-elkobrossy/medagentbench-agentified"
 env = {}
 
 [[participants]]
-image = "ghcr.io/ironshell-ui/claudecowork-agent:master"
+agentbeats_id = "ironshell-ui/ironshell"
 name = "agent"
-env = { DEEPSEEK_API_KEY = "${DEEPSEEK_API_KEY}", KIMI_API_KEY = "${KIMI_API_KEY}", MINIMAX_API_KEY = "${MINIMAX_API_KEY}", SERPAPI_KEY = "${SERPAPI_KEY}", OPENAI_API_KEY = "${OPENAI_API_KEY}" }
+env = { DEEPSEEK_API_KEY = "${DEEPSEEK_API_KEY}", KIMI_API_KEY = "${KIMI_API_KEY}", MINIMAX_API_KEY = "${MINIMAX_API_KEY}", SERPAPI_KEY = "${SERPAPI_KEY}", OPENAI_API_KEY = "${OPENAI_API_KEY}", GOOGLE_API_KEY = "${GOOGLE_API_KEY}" }
 
 [config]
 num_tasks = 50
