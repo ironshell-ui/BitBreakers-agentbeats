@@ -8,6 +8,8 @@ name = "agent"
 env = { DEEPSEEK_API_KEY = "${DEEPSEEK_API_KEY}", KIMI_API_KEY = "${KIMI_API_KEY}", MINIMAX_API_KEY = "${MINIMAX_API_KEY}", SERPAPI_KEY = "${SERPAPI_KEY}", OPENAI_API_KEY = "${OPENAI_API_KEY}", GOOGLE_API_KEY = "${GOOGLE_API_KEY}" }
 
 [config]
+fhir_api_base = "http://fhir-server:8080/fhir/"
+mcp_server_url = "http://green-agent:8002"
 num_tasks = 50
 max_rounds = 8
 domain = "medagentbench"
